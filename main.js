@@ -6,6 +6,8 @@ function $( query )
 
 var saved = true; 
 
+var lineMode = false;
+
 $("#showsidebar").onclick = function()
 {
 	$("#sidebar").classList.toggle("show");
@@ -15,27 +17,52 @@ $("#showsidebar").onclick = function()
 
 $("#save").onclick = function()
 {
-	for( var i = 0; i < data.length; i++ )
-	{
-		dataS += "{\"x\":"+data[i].x+",\"y\":"+data[i].y+",\"lastX\":"+data[i].lastX+",\"lastY\":"+data[i].lastY+",\"end\":"+data[i].end+",\"c\":\""+data[i].c+"\"}";
-		if( i != data.length - 1)
-		{
-			dataS+= ",";
-		}
-	}
-	dataS += "]";
+	dataS = JSON.stringify(data);
 	console.log( dataS );
 	localStorage.setItem("data", dataS);
-	dataS = '[';
+	dataS = "";
 	saved = true;
 	showMessage("Saved!");
 }
+
+$("#share").onclick = function()
+{
+	var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+	var dlAnchorElem = document.getElementById('link');
+	dlAnchorElem.setAttribute("href",     dataStr     );
+	dlAnchorElem.setAttribute("download", $("#title").value + ".drawcreate");
+	dlAnchorElem.click();
+}
+
+function onChange(event) {
+	event.preventDefault();
+        var reader = new FileReader();
+        reader.onload = onReaderLoad;
+        reader.readAsText(event.target.files[0]);
+    }
+
+    function onReaderLoad(event){
+        var obj = JSON.parse(event.target.result);
+        data = obj;
+		setup();
+    }
+ 
+    document.getElementById('file').addEventListener('change', onChange);
+
+
 $("#download").onclick = function()
 {
 	var link = document.getElementById('link');
-	link.setAttribute('download', $("input").value+'.png');
+	link.setAttribute('download', $("#title").value+'.png');
 	link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
 	link.click();
+}
+
+$("#line").onclick = function()
+{
+	lineMode = !lineMode;
+	this.classList.toggle( "disabled");
+	showMessage("Line Mode " + ( !lineMode ?  "On!" : "Off!" )) ;
 }
 
 function showMessage( msg )
@@ -165,7 +192,7 @@ function clear()
 {	
 	data = [];
 	data.length = 0;
-	dataS = "[";
+	dataS = "";
 	lastX = -1;
 	lastY = -1;
 	c.clearRect(0,0,c.canvas.width, c.canvas.height );
@@ -181,6 +208,13 @@ window.onbeforeunload = () => { return saved; } ;
 
 document.addEventListener( "mousedown", event =>
 {
+	if( !isDrawing )
+	{
+		lineSX = event.clientX;
+		lineSY = event.clientY;
+	}
+	lineEX = lineSX;
+		lineEY = lineSY;
 	isDrawing = true;
 	c.beginPath();
 });
@@ -189,7 +223,11 @@ document.addEventListener( "touchstart", event =>
 	isDrawing = true;
 	c.beginPath();
 });
-						  
+	
+var lineSX = -1;
+var lineSY = -1;
+var lineEX = -1;
+var lineEX = -1;
 document.addEventListener( "mousemove", event =>
 {
 	
@@ -197,6 +235,8 @@ document.addEventListener( "mousemove", event =>
 	{
 		mouseX = event.clientX;
 		mouseY = event.clientY;
+		lineEX = Math.abs ( mouseX - lineSX ) > 10 ? mouseX : lineSX;
+		lineEY = Math.abs ( mouseY - lineSY ) > 10 ? mouseY : lineSY;
 		saved = false;
 		draw();
 	}	
@@ -228,9 +268,13 @@ document.addEventListener( "touchend", event =>
 	c.closePath();
 	lastX = -1;
 	lastY = -1;
+	lineSX = -1;
+	lineEX = -1;
+	lineSY = -1;
+	lineEY = -1;
 });
 
-var dataS = "[";
+var dataS = "";
 
 function updateSideBar()
 {
@@ -244,11 +288,12 @@ function setup()
 	
 	updateSideBar();
 	var lastCol = data.length ? data[0].c : stringColor(255,255,255);
+	var curCol = lastCol;
 	c.beginPath();
 	for( var i = 0; i < data.length; i++ )
 	{
-		col = data[i].c
-		if( col != lastCol )
+		curCol = data[i].c
+		if( curCol != lastCol )
 		{
 			c.closePath();
 			c.stroke();			
@@ -257,7 +302,7 @@ function setup()
 		}
 		if( col == "black" || col == "#000" || col == "#000000" )
 			col = "white";
-		c.strokeStyle = col;
+		c.strokeStyle = curCol;
 		c.moveTo( data[i].lastX, data[i].lastY );
 		c.lineTo( data[i].x, data[i].y);
 		//console.log( !data[i].end ? "" :data[i].end );
@@ -273,10 +318,33 @@ function draw()
 	
 	if( lastX != -1 )
 	{
-		c.moveTo(lastX, lastY);
-		c.lineTo(mouseX, mouseY);
-		c.stroke();
-		data.push( {"x": mouseX, "y": mouseY, "lastX": lastX, "lastY": lastY, "end": !isDrawing, "c":col } );
+		if( !lineMode )
+		{
+			c.moveTo(lastX, lastY);
+			c.lineTo(mouseX, mouseY);
+			c.stroke();
+			data.push( {"x": mouseX, "y": mouseY, "lastX": lastX, "lastY": lastY, "end": !isDrawing, "c":col } );
+		}
+		else
+		{
+		
+			if( isDrawing )
+			{
+				bg( 0,0,0 );
+				setup();
+				c.strokeStyle = col;
+				c.beginPath();
+				c.moveTo( lineSX, lineSY );
+				c.lineTo(lineEX, lineEY);
+				c.stroke();
+			}
+			if( !isDrawing && ( lineSX - lineEX != lineEY - lineSY ) )
+			{
+				data.push( {"x": lineEX, "y": lineEY, "lastX": lineSX, "lastY": lineSY, "end": !isDrawing, "c":col } );
+				c.closePath();
+			}
+		
+		}
 		updateSideBar();
 	}
 	lastX = mouseX;

@@ -13,12 +13,24 @@
 				<span id = "undo" class = "button" >&#x293A;</span>
 				<span id = "redo" class = "button" >&#x293A;</span>
 			</div>
-			<span id = "save" class = "button">Save</span>
-			<span id = "download" class = "button">Download</span>
+			<div class = "buttonrow">
+				
+				<span id = "line" class = "button" >/</span>
+			</div>
+			<div class = "buttonrow">
+				<span id = "save" class = "button"><svg fill = "white" height = "20px" width = "20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+					<path d="M 5 2 C 3.346 2 2 3.346 2 5 L 2 45 C 2 46.654 3.346 48 5 48 L 45 48 C 46.654 48 48 46.654 48 45 L 48 12 C 48 11.734 47.90675 11.46825 47.71875 11.28125 L 38.71875 2.28125 C 38.53175 2.09325 38.266 2 38 2 L 5 2 z M 12 4 L 35 4 C 36.103 4 37 4.897 37 6 L 37 17 C 37 18.103 36.103 19 35 19 L 12 19 C 10.897 19 10 18.103 10 17 L 10 6 C 10 4.897 10.897 4 12 4 z M 30 6 C 29.447 6 29 6.447 29 7 L 29 16 C 29 16.553 29.447 17 30 17 L 33 17 C 33.553 17 34 16.553 34 16 L 34 7 C 34 6.447 33.553 6 33 6 L 30 6 z M 12.8125 26.03125 L 37.1875 26.03125 C 38.7175 26.03125 39.96875 27.2825 39.96875 28.8125 L 39.96875 46 L 10.03125 46 L 10.03125 28.8125 C 10.03125 27.2825 11.2825 26.03125 12.8125 26.03125 z M 6 41 L 8 41 L 8 43 L 6 43 L 6 41 z M 42 41 L 44 41 L 44 43 L 42 43 L 42 41 z"/>
+				</svg></span>
+				<span id = "share" class = "button"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  fill = "white" height = "20px" width = "20px" x="0px" y="0px" viewBox="0 0 333.115 333.115" style="enable-background:new 0 0 333.115 333.115;" xml:space="preserve">
+					<path d="M229.143,235.253c-5.458,0-10.697,0.909-15.602,2.566l-61.606-61.6c0.633-3.124,0.965-6.354,0.965-9.661
+					c0-3.307-0.332-6.535-0.965-9.656l61.606-61.602c4.904,1.655,10.144,2.568,15.602,2.568c26.986,0,48.938-21.951,48.938-48.931
+					C278.08,21.952,256.129,0,229.143,0c-26.976,0-48.925,21.952-48.925,48.938c0,5.459,0.907,10.703,2.563,15.609l-57.824,57.822
+					c-6.363-3.036-13.48-4.743-20.986-4.743c-26.985,0-48.936,21.953-48.936,48.932c0,26.986,21.95,48.938,48.936,48.938
+					c7.506,0,14.623-1.706,20.987-4.743l57.823,57.824c-1.656,4.903-2.563,10.152-2.563,15.608c0,26.981,21.949,48.931,48.925,48.931
+					c26.986,0,48.938-21.949,48.938-48.931C278.08,257.203,256.129,235.253,229.143,235.253z"/>
+					</svg></span>
+			</div>
 			<span id = "clear" class = "button disabled">Clear</span>
-			<br>
-			<br>
-			<br>
 			<span class = "col button" id = "col1" >red</span>
 			<span class = "col button" id = "col2" >blue</span>
 			<span class = "col button" id = "col3" >green</span>
@@ -26,7 +38,10 @@
 			<span class = "col button" id = "col5" >white</span>
 		</div>
 		<div id = "bottombar" class = "show ">
-			<input value = "Untitled">
+			<input id = "title" value = "Untitled" > <span id = "download" class = "button" style = "font-size: 18px; width: auto;margin: 0 60px; margin-left: 0px; padding: 10px 10px;">Download</span>
+			<form onsubmit="onChange(event)">
+			  <label for="file" class = "button" style = "font-size: 18px; margin: 0; padding: 10px 10px;">Upload a Sketch</label><input type="file" id="file" name="filename" val = "Upload A File">
+			</form>
 		</div>
 		
 		<div id = "wrapper">
