@@ -214,12 +214,19 @@ document.addEventListener( "mousedown", event =>
 		lineSY = event.clientY;
 	}
 	lineEX = lineSX;
-		lineEY = lineSY;
+	lineEY = lineSY;
 	isDrawing = true;
 	c.beginPath();
 });
 document.addEventListener( "touchstart", event =>
 {
+	if( !isDrawing )
+	{
+		lineSX = event.touches[0].clientX;;
+		lineSY = event.touches[0].clientY;;
+	}
+	lineEX = lineSX;
+	lineEY = lineSY;
 	isDrawing = true;
 	c.beginPath();
 });
@@ -248,6 +255,8 @@ document.addEventListener( "touchmove", event =>
 	{
 		mouseX = event.touches[0].clientX;
 		mouseY = event.touches[0].clientY;
+		lineEX = Math.abs ( mouseX - lineSX ) > 10 ? mouseX : lineSX;
+		lineEY = Math.abs ( mouseY - lineSY ) > 10 ? mouseY : lineSY;
 		saved = false;
 		draw();
 	}	
@@ -268,10 +277,6 @@ document.addEventListener( "touchend", event =>
 	c.closePath();
 	lastX = -1;
 	lastY = -1;
-	lineSX = -1;
-	lineEX = -1;
-	lineSY = -1;
-	lineEY = -1;
 });
 
 var dataS = "";
