@@ -1,0 +1,40 @@
+<html>
+	<head>
+		<title>Paint</title>
+		<link href = "style.css" rel="stylesheet" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+	<body>
+		<a id="link"></a>
+		<div id = "message" class = "movedown">Welcome</div>
+		<span id = "showsidebar" class = "show">&#x25B8;</span>
+		<div id = "sidebar" class = "show">
+			<div class = "buttonrow">
+				<span id = "undo" class = "button" >&#x293A;</span>
+				<span id = "redo" class = "button" >&#x293A;</span>
+			</div>
+			<span id = "save" class = "button">Save</span>
+			<span id = "download" class = "button">Download</span>
+			<span id = "clear" class = "button disabled">Clear</span>
+			<br>
+			<br>
+			<br>
+			<span class = "col button" id = "col1" >red</span>
+			<span class = "col button" id = "col2" >blue</span>
+			<span class = "col button" id = "col3" >green</span>
+			<span class = "col button" id = "col4" >yellow</span>
+			<span class = "col button" id = "col5" >white</span>
+		</div>
+		<div id = "bottombar" class = "show ">
+			<input value = "Untitled">
+		</div>
+		
+		<div id = "wrapper">
+			<canvas id = "canvas">
+			</canvas>
+		</div>
+		<script src = "data.js"></script>
+		<script src = "main.js"></script>
+	</body>
+
+</html>
