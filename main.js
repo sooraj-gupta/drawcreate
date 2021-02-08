@@ -218,6 +218,7 @@ document.addEventListener( "mousedown", event =>
 	isDrawing = true;
 	c.beginPath();
 });
+
 document.addEventListener( "touchstart", event =>
 {
 	if( !isDrawing )
@@ -248,6 +249,22 @@ document.addEventListener( "mousemove", event =>
 		draw();
 	}	
 });
+
+$("#bottombar").addEventListener("mousemove", event => {
+	isDrawing = false;
+} );
+
+$("#bottombar").addEventListener("touchmove", event => {
+	isDrawing = false;
+} );
+$("#sidebar").addEventListener("mousemove", event => {
+	isDrawing = false;
+} );
+
+$("#sidebar").addEventListener("touchmove", event => {
+	isDrawing = false;
+} );
+
 document.addEventListener( "touchmove", event =>
 {
 	
