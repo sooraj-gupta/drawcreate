@@ -64,6 +64,30 @@ $("#line").onclick = function()
 	this.classList.toggle( "disabled");
 	showMessage("Line Mode " + ( !lineMode ?  "On!" : "Off!" )) ;
 }
+let keysPressed = {};
+document.addEventListener( "keydown", event => {
+	if( event.keyCode == 76 ){
+		lineMode = !lineMode;
+		$("#line").classList.toggle( "disabled");
+		showMessage("Line Mode " + ( lineMode ?  "On!" : "Off!" )) ;
+	}
+	keysPressed[event.key] = true;
+
+	if (keysPressed['Meta'] && keysPressed['Shift'] && event.key == 'z') {
+	   redo();
+	}
+	else if (keysPressed['Meta'] && event.key == 'z') {
+		event.preventDefault();
+	   undo();
+	}
+	
+	if( event.keyCode == 90 && event.keyCode == 91 ){
+		undo();
+	}
+});
+document.addEventListener('keyup', (event) => {
+   delete keysPressed[event.key];
+});
 
 function showMessage( msg )
 {
@@ -93,6 +117,10 @@ colBtns.forEach
 
 $("#undo").onclick = function()
 {
+	undo();
+}
+
+function undo(){
 	if( data.length > 0 ){
 		var idx = -1;
 		for( var i = data.length-2; i > 0; i-- )
@@ -118,10 +146,9 @@ $("#undo").onclick = function()
 		showMessage("Undo!");
 	}
 }
-
-$("#redo").onclick = function()
+function redo()
 {
-	if( future.length > 0 )
+if( future.length > 0 )
 	{
 		var idx = -1;
 		for( var i = future.length-2; i >= 0; i-- )
@@ -146,6 +173,10 @@ $("#redo").onclick = function()
 		setup();
 		showMessage("Redo!");
 	}
+}
+$("#redo").onclick = function()
+{
+	redo();
 	
 }
 var mouseX = 0;

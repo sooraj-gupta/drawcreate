@@ -17,6 +17,7 @@ body{
 *{
 font-family: "Roboto";
 	font-weight: 300;
+	user-select: none;
 }
 
 #title
@@ -96,7 +97,7 @@ font-family: "Roboto";
 
 #sidebar
 {
-	transform: translateX(-140px);
+	transform: translateX(-160px);
 	transition: 0.3s;
 	position: fixed;
 	left: 10px;
@@ -125,11 +126,11 @@ div::-webkit-scrollbar {
 
 #bottombar
 {
-	transform: translateY(100px);
+	transform: translateY(120px);
 	transition: 0.3s;
 	position: fixed;
 	right: 10px;
-	width: calc( 100vw - 220px );
+	width: calc( 100vw - 230px );
 	bottom: 10px;
 	height: 70px;
 	border-radius: 10px;
@@ -144,6 +145,16 @@ div::-webkit-scrollbar {
 	font-size: 18px;
 	overflow-x: scroll;
 		
+}
+
+#bottombar .container
+{
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	min-width: 800px;
+	width: 100%;
+	padding-right:20px;
 }
 #bottombar.show
 {
@@ -223,7 +234,7 @@ div::-webkit-scrollbar {
 
 #title
 {
-	width: 100px;
+	min-width: 100px;
 }
 
 
